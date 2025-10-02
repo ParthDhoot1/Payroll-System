@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Payroll Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-blue-600 text-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Payroll Management System</h1>
+            <div class="flex items-center gap-4">
+                <span class="text-sm">Admin Dashboard</span>
+                <a href="/logout" class="bg-blue-700 px-4 py-2 rounded hover:bg-blue-800 transition">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-6">
+        <div class="mb-6">
+            <div class="flex gap-4 border-b">
+                <button onclick="showTab('employees')" class="tab-btn px-6 py-3 font-medium text-blue-600 border-b-2 border-blue-600">Employees</button>
+                <button onclick="showTab('attendance')" class="tab-btn px-6 py-3 font-medium text-gray-600 hover:text-blue-600">Attendance</button>
+                <button onclick="showTab('leaves')" class="tab-btn px-6 py-3 font-medium text-gray-600 hover:text-blue-600">Leaves</button>
+                <button onclick="showTab('payroll')" class="tab-btn px-6 py-3 font-medium text-gray-600 hover:text-blue-600">Payroll</button>
+                <button onclick="showTab('reports')" class="tab-btn px-6 py-3 font-medium text-gray-600 hover:text-blue-600">Reports</button>
+            </div>
+        </div>
+
+        <div id="employees-tab" class="tab-content">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Employee Management</h2>
+                    <button onclick="showAddEmployeeModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Employee</button>
+                </div>
+                <div id="employeesList" class="overflow-x-auto"></div>
+            </div>
+        </div>
+
+        <div id="attendance-tab" class="tab-content hidden">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Attendance Management</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <select id="attendanceEmployee" class="px-4 py-2 border border-gray-300 rounded">
+                        <option value="">Select Employee</option>
+                    </select>
+                    <input type="date" id="attendanceDate" class="px-4 py-2 border border-gray-300 rounded">
+                    <select id="attendanceStatus" class="px-4 py-2 border border-gray-300 rounded">
+                        <option value="present">Present</option>
+                        <option value="absent">Absent</option>
+                        <option value="half-day">Half Day</option>
+                        <option value="leave">Leave</option>
+                    </select>
+                </div>
+                <button onclick="markAttendance()" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 mb-6">Mark Attendance</button>
+                <div id="attendanceList" class="overflow-x-auto"></div>
+            </div>
+        </div>
+
+        <div id="leaves-tab" class="tab-content hidden">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Leave Applications</h2>
+                <div id="leavesList"></div>
+            </div>
+        </div>
+
+        <div id="payroll-tab" class="tab-content hidden">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Payroll Processing</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <select id="payrollMonth" class="px-4 py-2 border border-gray-300 rounded">
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                    <select id="payrollYear" class="px-4 py-2 border border-gray-300 rounded"></select>
+                    <button onclick="processPayroll()" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">Process Payroll</button>
+                </div>
+                <div id="payrollList" class="overflow-x-auto"></div>
+            </div>
+        </div>
+
+        <div id="reports-tab" class="tab-content hidden">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Payroll Reports</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <select id="reportMonth" class="px-4 py-2 border border-gray-300 rounded">
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                    <select id="reportYear" class="px-4 py-2 border border-gray-300 rounded"></select>
+                </div>
+                <button onclick="loadReports()" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 mb-6">Generate Report</button>
+                <div id="reportSummary" class="grid grid-cols-1 md:grid-cols-4 gap-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="addEmployeeModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl max-h-screen overflow-y-auto">
+            <h3 class="text-2xl font-bold mb-6">Add New Employee</h3>
+            <form id="addEmployeeForm" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Name</label>
+                        <input type="text" id="empName" required class="w-full px-4 py-2 border rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Email</label>
+                        <input type="email" id="empEmail" required class="w-full px-4 py-2 border rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Phone</label>
+                        <input type="text" id="empPhone" class="w-full px-4 py-2 border rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Department</label>
+                        <input type="text" id="empDept" required class="w-full px-4 py-2 border rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Designation</label>
+                        <input type="text" id="empDesig" required class="w-full px-4 py-2 border rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Date of Joining</label>
+                        <input type="date" id="empDOJ" required class="w-full px-4 py-2 border rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Basic Salary</label>
+                        <input type="number" id="empBasic" required class="w-full px-4 py-2 border rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">HRA</label>
+                        <input type="number" id="empHRA" class="w-full px-4 py-2 border rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">DA</label>
+                        <input type="number" id="empDA" class="w-full px-4 py-2 border rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">TA</label>
+                        <input type="number" id="empTA" class="w-full px-4 py-2 border rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">PF Deduction</label>
+                        <input type="number" id="empPF" class="w-full px-4 py-2 border rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Tax Deduction</label>
+                        <input type="number" id="empTax" class="w-full px-4 py-2 border rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Username</label>
+                        <input type="text" id="empUsername" required class="w-full px-4 py-2 border rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Password</label>
+                        <input type="password" id="empPassword" required class="w-full px-4 py-2 border rounded">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-4">
+                    <button type="button" onclick="hideAddEmployeeModal()" class="px-6 py-2 border rounded hover:bg-gray-100">Cancel</button>
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Add Employee</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/admin.js"></script>
+</body>
+</html>

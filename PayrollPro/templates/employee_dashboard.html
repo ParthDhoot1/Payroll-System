@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard - Payroll Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-blue-600 text-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Payroll Management System</h1>
+            <div class="flex items-center gap-4">
+                <span class="text-sm">Employee Dashboard</span>
+                <a href="/logout" class="bg-blue-700 px-4 py-2 rounded hover:bg-blue-800 transition">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-6">
+        <div class="mb-6">
+            <div class="flex gap-4 border-b">
+                <button onclick="showTab('profile')" class="tab-btn px-6 py-3 font-medium text-blue-600 border-b-2 border-blue-600">Profile</button>
+                <button onclick="showTab('payslips')" class="tab-btn px-6 py-3 font-medium text-gray-600 hover:text-blue-600">Payslips</button>
+                <button onclick="showTab('leaves')" class="tab-btn px-6 py-3 font-medium text-gray-600 hover:text-blue-600">Leaves</button>
+                <button onclick="showTab('attendance')" class="tab-btn px-6 py-3 font-medium text-gray-600 hover:text-blue-600">Attendance</button>
+            </div>
+        </div>
+
+        <div id="profile-tab" class="tab-content">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">My Profile</h2>
+                <div id="profileDetails" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+        </div>
+
+        <div id="payslips-tab" class="tab-content hidden">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">My Payslips</h2>
+                <div id="payslipsList"></div>
+            </div>
+        </div>
+
+        <div id="leaves-tab" class="tab-content hidden">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">My Leaves</h2>
+                    <button onclick="showApplyLeaveModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Apply Leave</button>
+                </div>
+                <div id="leavesList"></div>
+            </div>
+        </div>
+
+        <div id="attendance-tab" class="tab-content hidden">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">My Attendance</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <select id="attendanceMonth" class="px-4 py-2 border border-gray-300 rounded">
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                    <select id="attendanceYear" class="px-4 py-2 border border-gray-300 rounded"></select>
+                </div>
+                <button onclick="loadAttendance()" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 mb-6">Load Attendance</button>
+                <div id="attendanceList"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="applyLeaveModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            <h3 class="text-2xl font-bold mb-6">Apply for Leave</h3>
+            <form id="applyLeaveForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Leave Type</label>
+                    <select id="leaveType" required class="w-full px-4 py-2 border rounded">
+                        <option value="sick">Sick Leave</option>
+                        <option value="casual">Casual Leave</option>
+                        <option value="earned">Earned Leave</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Start Date</label>
+                    <input type="date" id="leaveStartDate" required class="w-full px-4 py-2 border rounded">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">End Date</label>
+                    <input type="date" id="leaveEndDate" required class="w-full px-4 py-2 border rounded">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Reason</label>
+                    <textarea id="leaveReason" rows="3" class="w-full px-4 py-2 border rounded"></textarea>
+                </div>
+                <div class="flex justify-end gap-4">
+                    <button type="button" onclick="hideApplyLeaveModal()" class="px-6 py-2 border rounded hover:bg-gray-100">Cancel</button>
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Apply</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="payslipModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold">Payslip Details</h3>
+                <button onclick="hidePayslipModal()" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div id="payslipDetails"></div>
+        </div>
+    </div>
+
+    <script src="/static/js/employee.js"></script>
+</body>
+</html>

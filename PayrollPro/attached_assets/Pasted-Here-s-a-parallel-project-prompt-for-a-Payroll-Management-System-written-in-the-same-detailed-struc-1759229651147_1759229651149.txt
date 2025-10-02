@@ -1,0 +1,87 @@
+Here’s a parallel project prompt for a Payroll Management System, written in the same detailed structure as your Library Management System one:
+
+
+---
+
+📌 Project Prompt – Payroll Management System
+
+Title:
+
+Payroll Management System (Web Application)
+
+Objective:
+
+The aim of this project is to design and develop a Payroll Management System as a web-based application that automates employee salary calculations, manages attendance, generates payslips, and maintains financial records. The system is built using Flask (Python) for backend, MySQL for database management, and HTML, CSS, Tailwind CSS, and JavaScript for frontend.
+
+Problem Statement:
+
+Traditional payroll systems rely on manual calculations for salaries, allowances, deductions, and tax compliance, which is time-consuming, error-prone, and lacks transparency. It becomes challenging for HR departments to manage employee records, track attendance, and ensure timely salary disbursement.
+
+Proposed Solution:
+
+The Payroll Management System automates payroll processing with the following modules:
+
+Employee Module:
+
+Employee registration & login.
+
+View personal details, salary structure, and payslips.
+
+Submit leave applications.
+
+
+Admin/HR Module:
+
+Admin/HR login with dashboard.
+
+Add, update, and manage employee records.
+
+Process payroll (basic salary, allowances, deductions, tax, net pay).
+
+Manage attendance and leave records.
+
+Generate monthly salary reports and payslips.
+
+
+Technology Stack:
+
+Frontend: HTML, CSS, TailwindCSS, JavaScript.
+
+Backend: Flask (Python).
+
+Database: MySQL.
+
+Libraries: Flask-SQLAlchemy, Flask-CORS, MySQL Connector, Werkzeug (for password hashing), Pandas (for payroll calculations & report generation).
+
+
+Data Structures Used:
+
+Hash Table (Dictionary): To store and quickly access employee records.
+
+Queue: To handle payroll processing tasks in batch order.
+
+Tree: For organizing hierarchical data such as employee roles, departments, and salary grades.
+
+
+Database Tables (MySQL):
+
+employees – Employee details (ID, name, role, department, etc.).
+
+attendance – Daily attendance and leave records.
+
+payroll – Salary breakdown (basic, allowances, deductions, tax, net pay).
+
+users – Login credentials for employees and admins.
+
+
+Expected Outcomes:
+
+A secure and efficient system for managing payroll processes.
+
+Accurate salary calculation with reduced manual errors.
+
+Automated attendance and leave management.
+
+Role-based dashboards for employees and HR/Admin.
+
+Scalable system with options to integrate tax compliance, direct bank transfer, and notifications.
